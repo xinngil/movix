@@ -4,16 +4,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Movix - Transporte Conectado</title>
+  <title>Movix - Transporte Inteligente</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
 </head>
-<body style="margin:0; font-family:Arial, sans-serif; background:#f2f2f2;">
-  <div style="background:#000; color:#fff; padding:1em;">
-    <h1>Bienvenido a Movix</h1>
-    <p>Tu sistema de transporte inteligente</p>
+<body>
+  <div id="mapa"></div>
+  <div class="overlay top-bar">
+    <button onclick="toggleMenu()">☰ Menú</button>
+    <button onclick="irAlLogin()">👤 Perfil</button>
   </div>
-  <div style="padding:1em;">
-    <p>Estamos construyendo la mejor experiencia para conectar rutas, personas y servicios locales.</p>
-    <p>Esta es la primera versión del sitio de <strong>Movix</strong>.</p>
+  <div class="overlay floating-buttons">
+    <button>🔍 Buscar Ruta</button>
+    <button>📍 Emergencia</button>
+    <button>⭐ Ranking</button>
   </div>
+  <div class="menu-lateral" id="menu">
+    <a href="#">Inicio</a>
+    <a href="#">App</a>
+    <a href="#">Descargas</a>
+    <a href="#">Reservas</a>
+    <a href="#">Reportes</a>
+    <a href="#">Modo Cuidador</a>
+    <a href="#">Ranking</a>
+    <a href="#" onclick="toggleMenu()">Cerrar Menú</a>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
