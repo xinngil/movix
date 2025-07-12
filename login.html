@@ -2,68 +2,144 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login Movix</title>
   <style>
     body {
-      background: #f2f2f2;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
-    .login-container {
-      max-width: 400px;
-      margin: 8% auto;
+
+    .login-box {
       background: white;
-      padding: 2rem;
+      padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 12px rgba(0,0,0,0.15);
+      width: 300px;
     }
-    h2 {
+
+    .login-box h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
       text-align: center;
+      color: #222;
     }
+
     input, select {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      border-radius: 6px;
     }
+
     button {
       width: 100%;
-      background: black;
+      padding: 10px;
+      background-color: black;
       color: white;
-      padding: 12px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
+      margin-top: 10px;
       cursor: pointer;
     }
-    a {
-      display: block;
+
+    button:hover {
+      background-color: #333;
+    }
+
+    .link {
       text-align: center;
       margin-top: 10px;
-      color: purple;
+    }
+
+    .link a {
       text-decoration: none;
+      color: #5c5cff;
     }
   </style>
 </head>
 <body>
-  <div class="login-container">
+  <div class="login-box" id="loginBox">
     <h2>Iniciar Sesión</h2>
-    <input type="email" placeholder="Correo electrónico" />
-    <input type="password" placeholder="Contraseña" />
-    <select>
-      <option>Invitado</option>
-      <option>Pasajero</option>
+    <input type="email" id="email" placeholder="Correo electrónico" />
+    <input type="password" id="password" placeholder="Contraseña" />
+    <select id="rol">
+      <option>Usuario</option>
       <option>Conductor</option>
       <option>Delivery</option>
       <option>Camión</option>
-      <option>Comercio</option>
     </select>
     <button onclick="login()">Entrar</button>
-    <a href="#" onclick="alert('Registro disponible próximamente')">¿No tienes cuenta? Regístrate</a>
+    <div class="link">
+      <a href="#" onclick="toggleRegistro()">¿No tienes cuenta? Regístrate</a>
+    </div>
+  </div>
+
+  <div class="login-box" style="display:none;" id="registroBox">
+    <h2>Registrarse</h2>
+    <input type="email" id="rEmail" placeholder="Correo electrónico" />
+    <input type="password" id="rPassword" placeholder="Contraseña" />
+    <select id="rRol">
+      <option>Usuario</option>
+      <option>Conductor</option>
+      <option>Delivery</option>
+      <option>Camión</option>
+    </select>
+    <button onclick="registrar()">Registrarse</button>
+    <div class="link">
+      <a href="#" onclick="toggleRegistro()">¿Ya tienes cuenta? Inicia sesión</a>
+    </div>
   </div>
 
   <script>
+    function toggleRegistro() {
+      const login = document.getElementById('loginBox');
+      const registro = document.getElementById('registroBox');
+      login.style.display = login.style.display === 'none' ? 'block' : 'none';
+      registro.style.display = registro.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function registrar() {
+      const email = document.getElementById("rEmail").value;
+      const password = document.getElementById("rPassword").value;
+      const rol = document.getElementById("rRol").value;
+
+      if (!email || !password) {
+        alert("Completa todos los campos.");
+        return;
+      }
+
+      const user = { email, password, rol };
+      localStorage.setItem("user_" + email, JSON.stringify(user));
+      alert("Registro exitoso. Ahora puedes iniciar sesión.");
+      toggleRegistro();
+    }
+
     function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const userData = localStorage.getItem("user_" + email);
+
+      if (!userData) {
+        alert("Usuario no encontrado.");
+        return;
+      }
+
+      const user = JSON.parse(userData);
+      if (user.password !== password) {
+        alert("Contraseña incorrecta.");
+        return;
+      }
+
+      localStorage.setItem("current_user", JSON.stringify(user));
+      alert("Bienvenido, " + user.rol + "!");
       window.location.href = "index.html";
     }
   </script>
