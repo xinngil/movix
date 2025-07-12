@@ -100,18 +100,6 @@
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<script>
-  // Aquí adentro están:
-  // - el mapa
-  // - los marcadores
-  // - el botón del menú
-</script>
-
-</body>
-</html>
 
   <script>
     // Inicializar mapa
@@ -122,7 +110,7 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Vehículo de prueba (colectivo, taxi, etc)
+    // Marcador principal (inicio)
     var marcadorVehiculo = L.marker([-30.615, -71.190]).addTo(map);
     marcadorVehiculo.bindPopup(`
       <b>Colectivo #233</b><br>
@@ -133,7 +121,7 @@
       <button onclick="alert('Reserva realizada con éxito ✅')">🚗 Reservar Servicio</button>
     `);
 
-    // Local comercial de prueba
+    // Marcador local comercial
     var marcadorLocal = L.marker([-30.613, -71.185]).addTo(map);
     marcadorLocal.bindPopup(`
       <b>Tienda Don Pedro</b><br>
@@ -142,6 +130,46 @@
       Personas dentro: 6<br><br>
       <button onclick="alert('Cotización enviada')">🛍️ Cotizar / Reservar</button>
     `);
+
+    // Vehículos simulados
+    const vehiculos = [
+      {
+        nombre: "Taxi #541",
+        patente: "GH-8921",
+        tipo: "Taxi",
+        pasajeros: "1 / 4",
+        lat: -30.613,
+        lng: -71.187
+      },
+      {
+        nombre: "Micro MontePatria",
+        patente: "MN-1122",
+        tipo: "Micro",
+        pasajeros: "12 / 30",
+        lat: -30.616,
+        lng: -71.195
+      },
+      {
+        nombre: "Colectivo #304",
+        patente: "XY-9001",
+        tipo: "Colectivo",
+        pasajeros: "3 / 4",
+        lat: -30.617,
+        lng: -71.192
+      }
+    ];
+
+    vehiculos.forEach((v) => {
+      const marker = L.marker([v.lat, v.lng]).addTo(map);
+      marker.bindPopup(`
+        <b>${v.nombre}</b><br>
+        Patente: ${v.patente}<br>
+        Tipo: ${v.tipo}<br>
+        Pasajeros: ${v.pasajeros}<br>
+        Pago: App / Transferencia<br><br>
+        <button onclick="alert('Reservado a ${v.nombre}')">🚗 Reservar</button>
+      `);
+    });
 
     // Mostrar / ocultar menú
     document.getElementById("menuBtn").addEventListener("click", function () {
