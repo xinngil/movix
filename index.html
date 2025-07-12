@@ -21,6 +21,36 @@
   </style>
 </head>
 <body>
+<!-- Menú lateral izquierdo -->
+<div id="sidebar">
+  <button onclick="alert('Menú próximamente')">📂 Menú</button>
+  <button onclick="alert('Colectivos')">🚖</button>
+  <button onclick="alert('Micros')">🚌</button>
+  <button onclick="alert('Taxis')">🚕</button>
+  <button onclick="alert('Delivery')">📦</button>
+  <button onclick="alert('Camiones')">🚛</button>
+</div>
+
+<!-- Estilos rápidos -->
+<style>
+  #sidebar {
+    position: fixed;
+    top: 60px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+  }
+  #sidebar button {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+</style>
 
   <div id="mapa"></div>
 
