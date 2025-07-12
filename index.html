@@ -1,1 +1,44 @@
-<html><head><title>Movix</title></head><body>Mapa funcionando aquí.</body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movix - Transporte Inteligente</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    #mapa {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="mapa"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Inicializar mapa
+    var map = L.map('mapa').setView([-30.615, -71.190], 13);
+
+    // Agregar capa base de OpenStreetMap (gratuita)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Ejemplo de marcador
+    L.marker([-30.615, -71.190]).addTo(map)
+      .bindPopup('Ubicación inicial Movix')
+      .openPopup();
+  </script>
+</body>
+</html>
