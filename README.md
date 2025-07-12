@@ -1,28 +1,16 @@
-# 🚀 Movix  
-**La plataforma que conecta transporte, comercio y comunidades en tiempo real**  
+# Movix
 
-🌍 **Visión**: Una app global para zonas urbanas y rurales, con mapa en vivo y inteligencia artificial.  
+Este proyecto es una base para una aplicación web de transporte.
 
----
+## Estructura
+- `index.html`: Muestra un mapa centrado en Santiago, Chile.
+- `login.html`: Formulario básico de inicio de sesión.
+- `assets/css/style.css`: Estilos en modo oscuro.
+- `assets/js/script.js`: Lógica para el mapa y validación de RUT.
 
-## 🛠️ ¿Cómo USAR este repositorio?  
-1. **Ver archivos**: Haz clic en cualquier archivo (ej: `index.html`) para ver el código.  
-2. **Editar**: Pulsa ✏️ "Edit" para hacer cambios.  
-3. **Guardar**: Al final, haz clic en **✔️ Commit changes**.  
+## Uso
+1. Abre `index.html` en tu navegador.
+2. Asegúrate de tener conexión a internet para cargar Leaflet.
 
----
-
-## 📂 Estructura básica  
-- `index.html`: Página principal con el mapa.  
-- `login.html`: Inicio de sesión.  
-- `script.js`: Funciones de la app.  
-- `style.css`: Diseño y colores.  
-
----
-
-## 🔥 ¿Qué falta?  
-- [ ] Organizar mejor los archivos.  
-- [ ] Añadir imágenes de cómo se ve Movix.  
-- [ ] Conectar con Firebase (base de datos).  
-
-💡 **Soy nuevo en GitHub**: Si algo no entiendo, @xinngil me ayudará paso a paso.  
+## Requisitos
+- Navegador moderno.
