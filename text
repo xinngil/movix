@@ -1,0 +1,8 @@
+movix/
+├── public/
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── script.js
+├── index.html
+└── README.md
