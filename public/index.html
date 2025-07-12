@@ -1,1 +1,122 @@
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movix - Plataforma de Transporte Inteligente</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="../src/styles/style.css">
+    <style>
+        /* Estilos básicos para empezar */
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background: #0f0f1a;
+            color: white;
+        }
+        
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+        
+        .map-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: rgba(0,0,0,0.7);
+            padding: 15px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .map-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .control-btn {
+            background: #6a5acd;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: #7b68ee;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Encabezado con logo -->
+    <div class="map-header">
+        <img src="assets/logo-movix.png" alt="Movix" class="logo">
+        <h1>Movix</h1>
+    </div>
+    
+    <!-- Mapa principal -->
+    <div id="map"></div>
+    
+    <!-- Controles flotantes -->
+    <div class="map-controls">
+        <button id="btn-transport" class="control-btn">🚗 Transporte</button>
+        <button id="btn-commerce" class="control-btn">🏪 Comercios</button>
+        <button id="btn-booking" class="control-btn">📅 Reservas</button>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="../src/scripts/script.js"></script>
+    <script src="../src/scripts/booking.js"></script>
+    
+    <script>
+        // Mapa básico centrado en Chile (puedes cambiar las coordenadas)
+        const map = L.map('map').setView([-33.45, -70.66], 13);
+        
+        // Capa de OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        
+        // Ejemplo: Marcador de taxi (simulado)
+        const taxiIcon = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/2838/2838694.png',
+            iconSize: [40, 40]
+        });
+        
+        L.marker([-33.45, -70.66], {
+            icon: taxiIcon,
+            bookingEnabled: true,
+            name: "Taxi disponible",
+            type: "taxi",
+            id: "taxi-001"
+        }).addTo(map).bindPopup("Taxi disponible - Juan Pérez");
+        
+        // Eventos para los botones
+        document.getElementById('btn-booking').addEventListener('click', () => {
+            const rut = prompt("Ingresa tu RUT (ej: 12345678-9):");
+            if (rut) {
+                window.bookingSystem.createBooking(rut, "Taxi en Santiago", new Date());
+            }
+        });
+    </script>
+</body>
+</html>
