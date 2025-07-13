@@ -1,0 +1,41 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: sans-serif;
+}
+#map {
+  height: 100vh;
+  width: 100vw;
+}
+#top-bar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  padding: 10px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  z-index: 1000;
+}
+#panelUsuario {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  background: #eee;
+  padding: 10px;
+  display: none;
+  z-index: 1000;
+}
+.xg-box {
+  position: absolute;
+  top: 100px;
+  left: 10px;
+  background: #fff;
+  padding: 10px;
+  width: 300px;
+  z-index: 1001;
+  border: 1px solid #ccc;
+}
+.hidden { display: none; }
