@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Movix - Mapa</title>
+  <title>Movix – Mapa Global</title>
 
   <!-- Leaflet CSS -->
   <link
     rel="stylesheet"
     href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
   />
+
   <style>
     body, html {
       margin: 0;
@@ -23,33 +24,60 @@
   </style>
 </head>
 <body>
-
   <div id="map"></div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <script>
-    const map = L.map('map').setView([0, 0], 2); // Vista mundial
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Importa los módulos necesarios desde Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+    // Configuración de tu proyecto Movix-Prod
+    const firebaseConfig = {
+      apiKey: "AlzaSyDYt3_RCyA4PZIH6zo-CtFJKBvjPorQG60",
+      authDomain: "movix-prod.firebaseapp.com",
+      databaseURL: "https://movix-prod-default-rtdb.firebaseio.com",
+      projectId: "movix-prod",
+      storageBucket: "movix-prod.appspot.com",
+      messagingSenderId: "662438290984",
+      appId: "1:662438290984:web:eb852b36dac6e991ad771d"
+    };
+
+    // Inicializa Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    // Mapa Leaflet
+    const map = L.map('map').setView([0, 0], 2); // Vista global
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors',
+      attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
+    // Geolocalización y marcador en el mapa
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        map.setView([latitude, longitude], 14);
-        L.marker([latitude, longitude])
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        L.marker([lat, lon])
           .addTo(map)
-          .bindPopup("Estás aquí")
-          .openPopup();
+          .bindPopup("¡Estás aquí!").openPopup();
+
+        map.setView([lat, lon], 13);
+
+        // Guarda la ubicación en Firebase
+        set(ref(database, 'usuarios/demo'), {
+          latitud: lat,
+          longitud: lon,
+          timestamp: Date.now()
+        });
+
       }, () => {
-        alert("No se pudo obtener tu ubicación");
+        alert("No se pudo obtener tu ubicación.");
       });
     } else {
-      alert("Tu navegador no permite geolocalización");
-    }
-  </script>
-</body>
-</html>
+      alert("Tu navegador no
