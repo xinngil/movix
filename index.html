@@ -1,1 +1,43 @@
-<!DOCTYPE html><html><head><title>Movix</title></head><body><div id='app'></div><script src='js/ui.js'></script></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movix</title>
+  <link rel="stylesheet" href="./css/styles.css" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <div id="navbar-container"></div>
+
+  <!-- Título temporal -->
+  <h1>Bienvenido a Movix</h1>
+
+  <!-- Mapa -->
+  <div id="map" style="height: 500px;"></div>
+
+  <!-- Scripts -->
+  <script src="./js/firebase.js" type="module"></script>
+  <script src="./js/ui.js" type="module"></script>
+  <script src="./js/map.js" type="module"></script>
+
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- Cargar componentes HTML -->
+  <script>
+    // Carga navbar.html dinámicamente
+    fetch('./components/navbar.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('navbar-container').innerHTML = html;
+      });
+
+    // Mensaje de prueba
+    console.log("Index cargado correctamente");
+  </script>
+</body>
+</html>
