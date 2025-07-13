@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Movix - Mapa Interactivo</title>
+    <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <!-- Estilos personalizados -->
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
     <div id="map"></div>
+
+    <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database.js"></script>
+    
+    <!-- Firebase v8 (IMPORTANTE: No usar v9) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    
+    <!-- Nuestros scripts -->
     <script src="/js/firebase.js"></script>
     <script src="/js/map.js"></script>
+
+    <!-- Nota: Hemos eliminado analytics ya que no es necesario para el MVP -->
 </body>
 </html>
