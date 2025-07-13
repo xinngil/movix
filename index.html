@@ -3,41 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Movix</title>
+  <title>Movix Global</title>
   <link rel="stylesheet" href="./css/styles.css" />
 
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 100vh;
+      width: 100%;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <div id="navbar-container"></div>
 
-  <!-- Título temporal -->
-  <h1>Bienvenido a Movix</h1>
+  <!-- Mapa global -->
+  <div id="map"></div>
 
-  <!-- Mapa -->
-  <div id="map" style="height: 500px;"></div>
-
-  <!-- Scripts -->
-  <script src="./js/firebase.js" type="module"></script>
-  <script src="./js/ui.js" type="module"></script>
-  <script src="./js/map.js" type="module"></script>
-
-  <!-- Leaflet -->
+  <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-  <!-- Cargar componentes HTML -->
   <script>
-    // Carga navbar.html dinámicamente
-    fetch('./components/navbar.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('navbar-container').innerHTML = html;
-      });
-
-    // Mensaje de prueba
-    console.log("Index cargado correctamente");
+    const map = L.map('map').setView([20, 0], 2); // Vista global
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
   </script>
+
 </body>
 </html>
