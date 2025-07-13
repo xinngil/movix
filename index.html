@@ -3,36 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Movix Global</title>
-  <link rel="stylesheet" href="./css/styles.css" />
+  <title>Movix - Mapa</title>
 
-  <!-- Leaflet -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
   <style>
-    #map {
-      height: 100vh;
-      width: 100%;
-    }
     body, html {
       margin: 0;
       padding: 0;
+      height: 100%;
+    }
+    #map {
+      height: 100vh;
+      width: 100%;
     }
   </style>
 </head>
 <body>
 
-  <!-- Mapa global -->
   <div id="map"></div>
 
   <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <script>
-    const map = L.map('map').setView([20, 0], 2); // Vista global
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-  </script>
+    const map = L.map('map').setView([0, 0], 2); // Vista mundial
 
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors',
+    }).addTo(map);
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        map.setView([latitude, longitude], 14);
+        L.marker([latitude, longitude])
+          .addTo(map)
+          .bindPopup("Estás aquí")
+          .openPopup();
+      }, () => {
+        alert("No se pudo obtener tu ubicación");
+      });
+    } else {
+      alert("Tu navegador no permite geolocalización");
+    }
+  </script>
 </body>
 </html>
