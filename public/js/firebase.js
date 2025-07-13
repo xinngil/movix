@@ -1,4 +1,3 @@
-// Configuración de Firebase (SDK v8 - Compatible con tu proyecto)
 const firebaseConfig = {
   apiKey: "AIzaSyDYt3_RCyA4PZlH6zo-CtFJKBvjPorQG60",
   authDomain: "movix-prod.firebaseapp.com",
@@ -15,11 +14,11 @@ firebase.initializeApp(firebaseConfig);
 // Referencia a la base de datos
 const db = firebase.database();
 
-// Escuchar cambios en 'locales'
+// Escucha cambios en la ruta 'locales'
 db.ref('locales').on('value', (snapshot) => {
   const data = snapshot.val();
-  console.log("Datos recibidos de Firebase:", data);
+  console.log("Datos recibidos:", data);
   if (window.actualizarMarcadores) {
-    window.actualizarMarcadores(data); // Llama a la función en map.js
+    window.actualizarMarcadores(data); // Envía datos al mapa
   }
 });
