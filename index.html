@@ -12,13 +12,13 @@
   />
 
   <style>
-    body, html {
+    html, body {
       margin: 0;
       padding: 0;
       height: 100%;
     }
     #map {
-      height: 100vh;
+      height: 100%;
       width: 100%;
     }
   </style>
@@ -29,55 +29,55 @@
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Firebase SDK -->
-  <script type="module">
-    // Importa los módulos necesarios desde Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
 
-    // Configuración de tu proyecto Movix-Prod
+  <script>
+    // 🔥 CONFIGURA TU FIREBASE AQUÍ:
     const firebaseConfig = {
-      apiKey: "AlzaSyDYt3_RCyA4PZIH6zo-CtFJKBvjPorQG60",
-      authDomain: "movix-prod.firebaseapp.com",
-      databaseURL: "https://movix-prod-default-rtdb.firebaseio.com",
+      apiKey: "TU_API_KEY",
+      authDomain: "TU_DOMINIO.firebaseapp.com",
+      databaseURL: "https://TU_DOMINIO.firebaseio.com",
       projectId: "movix-prod",
-      storageBucket: "movix-prod.appspot.com",
-      messagingSenderId: "662438290984",
-      appId: "1:662438290984:web:eb852b36dac6e991ad771d"
+      storageBucket: "TU_BUCKET",
+      messagingSenderId: "TU_MESSAGING_ID",
+      appId: "TU_APP_ID"
     };
 
-    // Inicializa Firebase
-    const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    // Mapa Leaflet
-    const map = L.map('map').setView([0, 0], 2); // Vista global
+    // 🌍 Inicia el mapa
+    const map = L.map("map").setView([0, 0], 2);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
     }).addTo(map);
 
-    // Geolocalización y marcador en el mapa
+    // 📍 Detectar ubicación del usuario
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
+      navigator.geolocation.getCurrentPosition((position) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-
-        L.marker([lat, lon])
-          .addTo(map)
-          .bindPopup("¡Estás aquí!").openPopup();
-
         map.setView([lat, lon], 13);
-
-        // Guarda la ubicación en Firebase
-        set(ref(database, 'usuarios/demo'), {
-          latitud: lat,
-          longitud: lon,
-          timestamp: Date.now()
-        });
-
-      }, () => {
-        alert("No se pudo obtener tu ubicación.");
+        L.marker([lat, lon]).addTo(map).bindPopup("Estás aquí").openPopup();
       });
-    } else {
-      alert("Tu navegador no
+    }
+
+    // 📌 Ejemplo de lectura desde Firebase
+    db.ref("marcadores").on("value", (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        Object.values(data).forEach((marker) => {
+          if (marker.lat && marker.lng) {
+            L.marker([marker.lat, marker.lng])
+              .addTo(map)
+              .bindPopup(marker.nombre || "Marcador sin nombre");
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
