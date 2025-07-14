@@ -6,16 +6,14 @@
   <title>Movix – Mapa Global</title>
 
   <!-- Leaflet CSS -->
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
+      font-family: sans-serif;
     }
     #map {
       height: 100%;
@@ -24,60 +22,17 @@
   </style>
 </head>
 <body>
-  <div id="map"></div>
+  <div id="map">Cargando mapa...</div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase SDKs via CDN (versión clásica) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js"></script>
 
   <script>
-    // 🔥 CONFIGURA TU FIREBASE AQUÍ:
+    // Configuración Firebase de tu proyecto
     const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_DOMINIO.firebaseapp.com",
-      databaseURL: "https://TU_DOMINIO.firebaseio.com",
-      projectId: "movix-prod",
-      storageBucket: "TU_BUCKET",
-      messagingSenderId: "TU_MESSAGING_ID",
-      appId: "TU_APP_ID"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    // 🌍 Inicia el mapa
-    const map = L.map("map").setView([0, 0], 2);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-    }).addTo(map);
-
-    // 📍 Detectar ubicación del usuario
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        map.setView([lat, lon], 13);
-        L.marker([lat, lon]).addTo(map).bindPopup("Estás aquí").openPopup();
-      });
-    }
-
-    // 📌 Ejemplo de lectura desde Firebase
-    db.ref("marcadores").on("value", (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        Object.values(data).forEach((marker) => {
-          if (marker.lat && marker.lng) {
-            L.marker([marker.lat, marker.lng])
-              .addTo(map)
-              .bindPopup(marker.nombre || "Marcador sin nombre");
-          }
-        });
-      }
-    });
-  </script>
-</body>
-</html>
+      apiKey: "AIzaSyDYt3_RCyA4PZlH6zo-CtFJKBvjPorQG60",
+      authDomain: "movix-prod.firebaseapp.com",
