@@ -57,4 +57,104 @@
       projectId: "movix-prod",
       storageBucket: "movix-prod.firebasestorage.app",
       messagingSenderId: "662438290984",
-      appId: "1:662438290984:web:eb852b36dac6e991
+      appId: "1:662438290984:web:eb852b36dac6e991ad771d"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Crear mapa
+    const map = L.map("map").setView([0, 0], 2);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Mostrar ubicación del usuario
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        map.setView([lat, lon], 13);
+        L.marker([lat, lon])
+          .addTo(map)
+          .bindPopup("Estás aquí")
+          .openPopup();
+      });
+    }
+
+    // Cargar marcadores individuales
+    db.ref("marcadores").on("value", (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        Object.values(data).forEach((marker) => {
+          if (marker.lat && marker.lng) {
+            L.marker([marker.lat, marker.lng])
+              .addTo(map)
+              .bindPopup(marker.nombre || "Marcador sin nombre");
+          }
+        });
+      }
+    });
+
+    // Grupo de zonas dibujadas
+    const drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
+
+    const drawControl = new L.Control.Draw({
+      edit: {
+        featureGroup: drawnItems
+      },
+      draw: {
+        polygon: true,
+        marker: false,
+        polyline: false,
+        rectangle: false,
+        circle: false,
+        circlemarker: false
+      }
+    });
+
+    let modoDibujo = false;
+
+    document.getElementById("btnDibujar").addEventListener("click", () => {
+      modoDibujo = true;
+      map.addControl(drawControl);
+      alert("📌 Dibuja el contorno del lugar en el mapa.");
+    });
+
+    map.on(L.Draw.Event.CREATED, function (e) {
+      if (!modoDibujo) return;
+      const layer = e.layer;
+      drawnItems.addLayer(layer);
+
+      const nombre = prompt("Nombre del lugar:");
+      const tipo = prompt("Tipo de zona (paradero, ruta, etc):");
+
+      if (!nombre || !tipo) {
+        alert("⚠️ Debes ingresar nombre y tipo.");
+        return;
+      }
+
+      const coords = layer.getLatLngs()[0].map(p => ({
+        lat: p.lat,
+        lng: p.lng
+      }));
+
+      const zona = {
+        nombre,
+        tipo,
+        coords,
+        fecha: new Date().toISOString()
+      };
+
+      db.ref("zonas").push(zona).then(() => {
+        alert("✅ Zona guardada correctamente.");
+      }).catch(err => {
+        alert("❌ Error al guardar: " + err.message);
+      });
+
+      map.removeControl(drawControl);
+      modoDibujo = false;
+    });
+  </script>
+</body>
+</html>
