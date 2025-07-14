@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Movix – Subir marcador</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 2rem;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 1rem;
+    }
+    input, select {
+      padding: 0.5rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    button {
+      margin-top: 1rem;
+      padding: 0.6rem 1.5rem;
+    }
+    .status {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📍 Agregar marcador a Movix</h2>
+
+  <label>Nombre del lugar:</label>
+  <input type="text" id="nombre" placeholder="Ej: Terminal Carén" />
+
+  <label>Tipo:</label>
+  <select id="tipo">
+    <option value="colectivo">Colectivo</option>
+    <option value="paradero">Paradero</option>
+    <option value="restaurante">Restaurante</option>
+    <option value="sendero">Sendero</option>
+    <option value="otro">Otro</option>
+  </select>
+
+  <label>Latitud:</label>
+  <input type="number" id="lat" step="any" />
+
+  <label>Longitud:</label>
+  <input type="number" id="lng" step="any" />
+
+  <button onclick="usarUbicacion()">Usar mi ubicación</button>
+  <button onclick="subirMarcador()">Subir marcador</button>
+
+  <div class="status" id="estado"></div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDYt3_RCyA4PZlH6zo-CtFJKBvjPorQG60",
+      authDomain: "movix-prod.firebaseapp.com",
+      databaseURL: "https://movix-prod-default-rtdb.firebaseio.com",
+      projectId: "movix-prod",
+      storageBucket: "movix-prod.firebasestorage.app",
+      messagingSenderId: "662438290984",
+      appId: "1:662438290984:web:eb852b36dac6e991ad771d"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const auth = firebase.auth();
+
+    let usuarioActual = null;
+
+    auth.onAuthStateChanged(user => {
+      usuarioActual = user;
+      const est = document.getElementById("estado");
+      if (user) {
+        est.innerText = "Estás conectado como: " + user.email;
+      } else {
+        est.innerText = "No has iniciado sesión. El marcador será anónimo.";
+      }
+    });
+
+    function usarUbicacion() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          document.getElementById("lat").value = pos.coords.latitude;
+          document.getElementById("lng").value = pos.coords.longitude;
+        }, () => alert("No se pudo obtener la ubicación."));
+      } else {
+        alert("Tu navegador no soporta geolocalización.");
+      }
+    }
+
+    function subirMarcador() {
+      const nombre = document.getElementById("nombre").value;
+      const tipo = document.getElementById("tipo").value;
+      const lat = parseFloat(document.getElementById("lat").value);
+      const lng = parseFloat(document.getElementById("lng").value);
+      const estado = document.getElementById("estado");
+
+      if (!nombre || isNaN(lat) || isNaN(lng)) {
+        alert("Completa todos los campos.");
+        return;
+      }
+
+      const nuevo = {
+        nombre,
+        tipo,
+        lat,
+        lng,
+        fecha: new Date().toISOString()
+      };
+
+      if (usuarioActual) {
+        nuevo.creadoPor = usuarioActual.uid;
+      }
+
+      const ref = db.ref("marcadores").push();
+      ref.set(nuevo).then(() => {
+        estado.innerText = "✅ Marcador subido correctamente.";
+        document.getElementById("nombre").value = "";
+        document.getElementById("lat").value = "";
+        document.getElementById("lng").value = "";
+      }).catch(err => {
+        estado.innerText = "❌ Error: " + err.message;
+      });
+    }
+  </script>
+</body>
+</html>
