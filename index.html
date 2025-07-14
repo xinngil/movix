@@ -73,7 +73,7 @@
       navigator.geolocation.getCurrentPosition((pos) => {
         const lat = pos.coords.latitude;
         const lon = pos.coords.longitude;
-        map.setView([lat, lon], 13);
+        map.setView([lat, lon], 14);
         L.marker([lat, lon])
           .addTo(map)
           .bindPopup("Estás aquí")
@@ -81,7 +81,7 @@
       });
     }
 
-    // Cargar marcadores individuales
+    // Mostrar marcadores simples desde Firebase
     db.ref("marcadores").on("value", (snapshot) => {
       const data = snapshot.val();
       if (data) {
@@ -95,7 +95,7 @@
       }
     });
 
-    // Grupo de zonas dibujadas
+    // Dibujo con Leaflet Draw
     const drawnItems = new L.FeatureGroup();
     map.addLayer(drawnItems);
 
