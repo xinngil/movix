@@ -1,1 +1,0 @@
-// Configuración e inicialización de Firebase

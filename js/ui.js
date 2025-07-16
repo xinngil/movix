@@ -1,1 +1,0 @@
-// Interfaz de usuario y lógica de modo oscuro, red social, navegación, etc.
