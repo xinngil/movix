@@ -1,1 +1,0 @@
-console.log("Movix App cargada correctamente");
